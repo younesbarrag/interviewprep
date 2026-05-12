@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('concepts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('domain_id')->constrained()->onDelete('cascade');
+            $table->string('title');
+            $table->text('explanation');
+            $table->enum('difficulty', ['junior', 'mid', 'senior']);
+            $table->enum('status', ['to_review', 'in_progress', 'mastered']);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

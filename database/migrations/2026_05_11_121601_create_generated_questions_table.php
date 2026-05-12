@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('generated_questions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('concept_id')->constrained()->onDelete('cascade');
+            $table->json('questions');
             $table->timestamps();
         });
     }
