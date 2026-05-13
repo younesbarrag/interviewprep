@@ -135,13 +135,11 @@ class ConceptController extends Controller
         return view('concepts.archived', compact('concepts'));
     }
 
-    public function restore(Concept $concept): RedirectResponse
+    public function restore(int $id): RedirectResponse
     {
-        $concept->load('domain');
-
-        if ($concept->domain->user_id !== auth()->id()) {
-            abort(403);
-        }
+        $concept = Concept::onlyTrashed()
+            ->whereHas('domain', fn($q) => $q->where('user_id', auth()->id()))
+            ->findOrFail($id);
 
         $concept->restore();
 
