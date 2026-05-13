@@ -54,7 +54,7 @@ class ConceptController extends Controller
             ->with('success', 'Concept créé avec succès.');
     }
 
-    public function show(Concept $concept): View
+public function show(Concept $concept): View
     {
         $concept->load('domain');
 
@@ -63,6 +63,9 @@ class ConceptController extends Controller
         }
 
         $concept->loadCount('generatedQuestions');
+        $concept->load(['generatedQuestions' => function ($query) {
+            $query->latest();
+        }]);
 
         return view('concepts.show', compact('concept'));
     }
