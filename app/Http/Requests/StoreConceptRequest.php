@@ -11,6 +11,13 @@ class StoreConceptRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        if (!$this->filled('status')) {
+            $this->merge(['status' => 'to_review']);
+        }
+    }
+
     public function rules(): array
     {
         return [

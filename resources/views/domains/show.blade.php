@@ -51,7 +51,71 @@
             <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Concepts</h2>
-                    <span class="text-sm text-gray-500">La gestion des concepts arrive...</span>
+                    <div class="flex gap-2">
+                        <a href="{{ route('domains.concepts.create', $domain) }}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+                            Nouveau concept
+                        </a>
+                    </div>
+                </div>
+
+                @if($concepts->isEmpty())
+                    <div class="text-center py-8">
+                        <p class="text-gray-500 dark:text-gray-400 mb-4">Aucun concept pour le moment.</p>
+                        <a href="{{ route('domains.concepts.create', $domain) }}" class="text-indigo-600 hover:text-indigo-800">
+                            Créer votre premier concept
+                        </a>
+                    </div>
+                @else
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Titre</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Difficulté</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Statut</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                @foreach($concepts as $concept)
+                                    <tr>
+                                        <td class="px-4 py-3">
+                                            <a href="{{ route('concepts.show', $concept) }}" class="text-indigo-600 hover:text-indigo-800 font-medium">
+                                                {{ $concept->title }}
+                                            </a>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                                {{ $concept->difficultyLabel() }}
+                                            </span>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                                @if($concept->status === 'to_review') bg-yellow-100 text-yellow-800
+                                                @elseif($concept->status === 'in_progress') bg-blue-100 text-blue-800
+                                                @else bg-green-100 text-green-800 @endif">
+                                                {{ $concept->statusLabel() }}
+                                            </span>
+                                        </td>
+                                        <td class="px-4 py-3 text-sm">
+                                            <a href="{{ route('concepts.show', $concept) }}" class="text-indigo-600 hover:text-indigo-800 mr-2">Voir</a>
+                                            <a href="{{ route('concepts.edit', $concept) }}" class="text-gray-600 hover:text-gray-800 mr-2">Modifier</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+
+                <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <a href="{{ route('domains.concepts.index', $domain) }}" class="text-indigo-600 hover:text-indigo-800 text-sm">
+                        Voir tous les concepts →
+                    </a>
+                    <span class="mx-2 text-gray-400">|</span>
+                    <a href="{{ route('concepts.archived') }}" class="text-gray-600 hover:text-gray-800 text-sm">
+                        Concepts archivés
+                    </a>
                 </div>
             </div>
         </div>

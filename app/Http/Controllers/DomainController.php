@@ -54,7 +54,9 @@ class DomainController extends Controller
             ->where('status', 'mastered')
             ->count();
 
-        return view('domains.show', compact('domain'));
+        $concepts = $domain->concepts()->orderBy('created_at', 'desc')->get();
+
+        return view('domains.show', compact('domain', 'concepts'));
     }
 
     public function edit(Domain $domain): View
