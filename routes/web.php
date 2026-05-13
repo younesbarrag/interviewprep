@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AiQuestionController;
 use App\Http\Controllers\DomainController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -13,6 +14,10 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::post('/concepts/{concept}/generate-questions', [AiQuestionController::class, 'generate'])
+        ->name('concepts.generate-questions');
+    Route::delete('/generated-questions/{generatedQuestion}', [AiQuestionController::class, 'destroy'])
+        ->name('generated-questions.destroy');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
