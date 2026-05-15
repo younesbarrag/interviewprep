@@ -3,51 +3,54 @@
 @section('title', 'Nouveau Domaine')
 
 @section('content')
-<div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-    <div class="px-4 py-6 sm:px-0">
+<div class="py-8">
+    <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="mb-6">
-            <a href="{{ route('domains.index') }}" class="text-indigo-600 hover:text-indigo-800">
-                ← Retour aux domaines
+            <a href="{{ route('domains.index') }}" class="inline-flex items-center gap-2 text-indigo-400 hover:text-indigo-300 transition text-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+                Retour aux domaines
             </a>
         </div>
 
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 max-w-lg">
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Nouveau Domaine</h1>
+        <div class="bg-slate-800/70 rounded-xl p-6 border border-slate-700">
+            <h1 class="text-xl font-bold text-slate-100 mb-6">Nouveau Domaine</h1>
 
             <form action="{{ route('domains.store') }}" method="POST">
                 @csrf
 
-                <div class="mb-4">
-                    <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nom</label>
+                <div class="mb-5">
+                    <label for="name" class="block text-sm font-medium text-slate-300 mb-2">Nom</label>
                     <input type="text" name="name" id="name" value="{{ old('name') }}"
-                        class="w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                        class="w-full rounded-lg border border-slate-600 bg-slate-700 text-slate-100 px-4 py-2.5 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 @error('name') border-red-500 @enderror"
                         required>
                     @error('name')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1.5 text-sm text-red-400">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <div class="mb-4">
-                    <label for="color" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Couleur</label>
+                <div class="mb-6">
+                    <label for="color" class="block text-sm font-medium text-slate-300 mb-2">Couleur</label>
                     <div class="flex gap-3 items-center">
-                        <input type="color" name="color" id="color" value="{{ old('color', '#3B82F6') }}"
-                            class="h-10 w-14 rounded border border-gray-300 cursor-pointer" required>
-                        <input type="text" name="color" id="color_hex" value="{{ old('color', '#3B82F6') }}"
+                        <input type="color" id="color_picker" value="{{ old('color', '#3B82F6') }}"
+                            class="h-10 w-14 rounded-lg border border-slate-600 cursor-pointer">
+                        <input type="text" name="color" id="color" value="{{ old('color', '#3B82F6') }}"
                             pattern="^#[0-9A-Fa-f]{6}$"
-                            class="flex-1 rounded-md border-gray-300 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                            class="flex-1 rounded-lg border border-slate-600 bg-slate-700 text-slate-100 px-4 py-2.5 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 @error('color') border-red-500 @enderror"
                             placeholder="#RRGGBB" required>
                     </div>
-                    <p class="mt-1 text-sm text-gray-500">Format: #RRGGBB</p>
+                    <p class="mt-1.5 text-xs text-slate-500">Format: #RRGGBB</p>
                     @error('color')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1.5 text-sm text-red-400">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div class="flex gap-3">
-                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
-                        Créer
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2.5 rounded-lg transition">
+                        Creer
                     </button>
-                    <a href="{{ route('domains.index') }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
+                    <a href="{{ route('domains.index') }}" class="bg-slate-700 hover:bg-slate-600 text-slate-200 font-medium px-5 py-2.5 rounded-lg transition">
                         Annuler
                     </a>
                 </div>
@@ -58,16 +61,16 @@
 
 @push('scripts')
 <script>
+    const colorPicker = document.getElementById('color_picker');
     const colorInput = document.getElementById('color');
-    const colorHex = document.getElementById('color_hex');
 
-    colorInput.addEventListener('input', function() {
-        colorHex.value = this.value;
+    colorPicker.addEventListener('input', function() {
+        colorInput.value = this.value;
     });
 
-    colorHex.addEventListener('input', function() {
+    colorInput.addEventListener('input', function() {
         if (/^#[0-9A-Fa-f]{6}$/.test(this.value)) {
-            colorInput.value = this.value;
+            colorPicker.value = this.value;
         }
     });
 </script>
